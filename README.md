@@ -18,3 +18,7 @@ or add
 ```
 
 to the require section of your `composer.json` file.
+
+[Usage of AwsSdk](https://github.com/jarrus90/yii2-aws-components/wiki/AwsSdk)
+
+[Usage of Aws S3](https://github.com/jarrus90/yii2-aws-components/wiki/S3)

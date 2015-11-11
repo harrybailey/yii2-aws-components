@@ -9,7 +9,7 @@ namespace jarrus90\AwsComponents\Services;
 use yii\base\Component;
 use Aws\S3\S3Client;
 use yii\helpers\FileHelper;
-
+use Aws\Credentials\Credentials;
 /**
  * A Yii2-compatible component wrapper for Aws\S3\S3Client.
  * Just add this component to your configuration providing this class,
@@ -39,14 +39,18 @@ class S3 extends Component {
     public $bucket;
     public $key;
     public $secret;
+    public $region;
     public $prefix = '';
     private $_client;
 
     public function init() {
         parent::init();
+        $credentials = new Credentials($this->key, $this->secret);
         $this->_client = S3Client::factory([
-                    'key' => $this->key,
-                    'secret' => $this->secret,
+                    'region' => $this->region,
+                    'scheme' => 'http',
+                    'version' => '2006-03-01',
+                    'credentials' => $credentials
         ]);
     }
 
@@ -96,5 +100,30 @@ class S3 extends Component {
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    public function listFiles($prefix = false, $bucket = false) {
+        if (!$bucket) {
+            $bucket = $this->bucket;
+        }
+        if (!$prefix) {
+            $prefix = $this->prefix;
+        }
+        try {
+            $result = $this->_client->getIterator('ListObjects', [
+                'Bucket' => $bucket,
+                'Prefix' => $prefix,
+            ]);
+            return $result;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    public function getObjectUrl($bucket = false, $key = ''){
+        if (!$bucket) {
+            $bucket = $this->bucket;
+        }
+        return $this->_client->getObjectUrl($bucket, $key);
     }
 }

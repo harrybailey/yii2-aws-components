@@ -105,7 +105,7 @@ class S3ActionUpload extends Action {
                 ];
             } else {
                 if ($this->unique === true && $model->file->extension) {
-                    $md5Filename = md5($model->file->name);
+                    $md5Filename = md5($model->file->name . '_' . rand(100000, 999999) . '_' . time());
                     $filename = $md5Filename[0] . '/' . $md5Filename[1] . '/' . $md5Filename[2] . '/' . $md5Filename . '.' . $model->file->extension;
                     $model->file->name = $filename;
                 }

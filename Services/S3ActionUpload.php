@@ -72,6 +72,11 @@ class S3ActionUpload extends Action {
      * @var array Model validator options
      */
     public $validatorOptions = [];
+	
+    /**
+     * @var array Action additional options
+     */
+    public $options = [];
 
     /**
      * @var string Model validator name
@@ -111,6 +116,9 @@ class S3ActionUpload extends Action {
                 }
                 $uploadResult = $this->storage->uploadFile($model->file->tempName, $model->file->name);
                 if ($uploadResult) {
+                    if(isset($this->options['baseUrl'])){
+                        $uploadResult = Yii::getAlias($this->options['baseUrl'] . $filename);
+                    }
                     $result = ['filelink' => $uploadResult];
                     if ($this->uploadOnlyImage !== true) {
                         $result['filename'] = $model->file->name;

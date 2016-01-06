@@ -9,7 +9,7 @@ namespace jarrus90\AwsComponents\Services;
 use yii\base\Component;
 use Aws\S3\S3Client;
 use yii\helpers\FileHelper;
-use Aws\Credentials\Credentials;
+use Aws\Common\Credentials\Credentials;
 /**
  * A Yii2-compatible component wrapper for Aws\S3\S3Client.
  * Just add this component to your configuration providing this class,
